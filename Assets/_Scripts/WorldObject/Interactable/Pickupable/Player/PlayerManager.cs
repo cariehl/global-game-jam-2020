@@ -33,11 +33,11 @@ public class PlayerManager : MonoBehaviour {
     }
 
     private void Start() {
-        AddRobots();
+        //AddRobots();
 
-        if (robots.Count > 0) {
-            mainRobot = robots[0];
-        }
+        //if (robots.Count > 0) {
+        //    mainRobot = robots[0];
+        //}
 
         Movement(Vector2.zero);
     }
@@ -54,6 +54,7 @@ public class PlayerManager : MonoBehaviour {
 
     // Adds robot to owned list and registers events
     public void AddRobot(Robot robot) {
+        robot.transform.parent = robotContainer.transform;
         robot.OnRobotDestroyed += RemoveRobot;
         robots.Add(robot);
     }
@@ -109,5 +110,17 @@ public class PlayerManager : MonoBehaviour {
         if (mainRobot == null) return;
 
         mainRobot.Use();
+    }
+
+    public void StartLevel() {
+        mainRobot = robots[0];
+    }
+
+    public void FinishLevel() {
+        foreach (Robot robot in robots.ToArray()) {
+            robot.RecallSelf();
+        }
+
+        mainRobot = null;
     }
 }

@@ -46,7 +46,7 @@ public class Robot : Pickupable {
     /// <summary>
     /// Invokes events, plays animations, cleans up and destroys self
     /// </summary>
-    private void RecallSelf() {
+    public void RecallSelf() {
         OnRobotDestroyed?.Invoke(this);
         Destroy(this.gameObject);
     }
