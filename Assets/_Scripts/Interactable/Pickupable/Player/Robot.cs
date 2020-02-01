@@ -3,22 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Robot : MonoBehaviour {
-    //PlayerControls controls;
+public class Robot : Pickupable {
 
-    public float speed = 50f;
-    Vector3 move;
+    [SerializeField]
+    private float speed = 50f;
 
-    private void Awake() {
-        //controls = new PlayerControls();
+    private Vector3 move;
 
-        //controls.Gameplay.Move.performed += ctx => move = ctx.ReadValue<Vector2>();
-        //controls.Gameplay.Move.canceled += ctx => move = Vector3.zero;
-    }
+    
 
-    //private void OnEnable() {
-    //    controls.Gameplay.Enable();
-    //}
+    // items you can receive that "float" around you
+    private List<Item> items = new List<Item>();
 
     // Update is called once per frame
     void Update() {
