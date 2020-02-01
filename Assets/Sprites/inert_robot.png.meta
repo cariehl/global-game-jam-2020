@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 7e761073039f0a3439aecfd555ce8635
+guid: 0383e9895b28d0f46b41f027d1739a1f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5703470685772037335
-    second: metal_tiles_0
+      213: -3852566954406036226
+    second: inert_robot_right_0
   - first:
-      213: -7466155902530845770
-    second: metal_tiles_1
+      213: 7975579837505093771
+    second: inert_robot_left_0
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -104,7 +104,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: metal_tiles_0
+      name: inert_robot_right_0
       rect:
         serializedVersion: 2
         x: 0
@@ -118,14 +118,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7dcbb44de5cc62f40800000000000000
-      internalID: 5703470685772037335
+      spriteID: efc383944cee88ac0800000000000000
+      internalID: -3852566954406036226
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: metal_tiles_1
+      name: inert_robot_left_0
       rect:
         serializedVersion: 2
         x: 0
@@ -139,8 +139,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6b386f793c2e26890800000000000000
-      internalID: -7466155902530845770
+      spriteID: b8042441b93feae60800000000000000
+      internalID: 7975579837505093771
       vertices: []
       indices: 
       edges: []
