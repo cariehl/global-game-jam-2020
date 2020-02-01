@@ -6,6 +6,8 @@ public class PlayerManager : MonoBehaviour {
 
     private PlayerControls controls;
 
+    [SerializeField] private GameObject robotContainer;
+
     [SerializeField]
     private List<Robot> robots = new List<Robot>();
 
@@ -45,7 +47,7 @@ public class PlayerManager : MonoBehaviour {
     /// </summary>
     private void AddRobots() {
         robots.Clear();
-        foreach(Robot robot in GetComponentsInChildren<Robot>()) {
+        foreach(Robot robot in robotContainer.GetComponentsInChildren<Robot>()) {
             AddRobot(robot);
         }
     }
