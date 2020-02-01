@@ -16,14 +16,15 @@ public class CameraTransition : MonoBehaviour
     }
 
     void Start() {
-        StartCoroutine(DelayedCameraTransition());
+        //StartCoroutine(DelayedCameraTransition());
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.name == "Player") {
+    private void OnTriggerEnter2D(Collider2D collider) {
+        Debug.Log("TriggerEnter2D");
+        if (collider.gameObject.name == "Player") {
+            Debug.Log("It was the player!");
             StartCoroutine(CameraTransitionCoroutine());
-            Destroy(this.gameObject);
+            Destroy(this.GetComponent<BoxCollider2D>());
         }
     }
 
@@ -32,6 +33,7 @@ public class CameraTransition : MonoBehaviour
         float startingOrthographicSize = mainCamera.orthographicSize;
         
         for (float f = 0f; f < transitionTimeSeconds; f += Time.deltaTime) {
+            Debug.Log($"Camera f: {f}");
             Vector3 currentPoint = Vector3.Lerp(startingPoint, targetPoint, f / transitionTimeSeconds);
             mainCamera.transform.SetPositionAndRotation(currentPoint, mainCamera.transform.rotation);
 
