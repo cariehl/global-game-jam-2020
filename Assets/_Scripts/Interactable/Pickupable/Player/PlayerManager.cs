@@ -40,13 +40,29 @@ public class PlayerManager : MonoBehaviour {
         Movement(Vector2.zero);
     }
 
+    /// <summary>
+    /// Adds all Robots child to this object to owned list
+    /// </summary>
     private void AddRobots() {
         robots.Clear();
-        robots.AddRange(GetComponentsInChildren<Robot>());
+        foreach(Robot robot in GetComponentsInChildren<Robot>()) {
+            AddRobot(robot);
+        }
     }
 
+    // Adds robot to owned list and registers events
     public void AddRobot(Robot robot) {
+        robot.OnRobotDestroyed += RemoveRobot;
         robots.Add(robot);
+    }
+
+    /// <summary>
+    /// Removes robot from "owned" list of robots
+    /// </summary>
+    /// <param name="robot"></param>
+    private void RemoveRobot(Robot robot) {
+        robot.OnRobotDestroyed -= RemoveRobot;
+        robots.Remove(robot);
     }
 
     private void Movement(Vector2 move) {
@@ -55,6 +71,9 @@ public class PlayerManager : MonoBehaviour {
         mainRobot.Move(move);
     }
 
+    /// <summary>
+    /// Swaps control to the next robot if there is one
+    /// </summary>
     private void Swap() {
         if (robots.Count <= 1) return;
 
@@ -73,7 +92,7 @@ public class PlayerManager : MonoBehaviour {
     private void Recall() {
         if (mainRobot == null) return;
 
-        foreach (Robot robot in robots) {
+        foreach(Robot robot in robots.ToArray()) {
             if (robot == mainRobot) continue;
 
             robot.Recall(mainRobot);

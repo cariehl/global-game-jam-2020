@@ -1,19 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Robot : Pickupable {
+
+    public delegate void RobotDestroyedDelegate(Robot robot);
+    public event RobotDestroyedDelegate OnRobotDestroyed;
 
     [SerializeField]
     private float speed = 50f;
 
-    private Vector3 move;
-
+    [SerializeField]
+    private Pickupable heldObject;
     
-
     // items you can receive that "float" around you
-    private List<Item> items = new List<Item>();
+    [SerializeField] private List<Item> items = new List<Item>();
+
+    private Vector3 move;
 
     // Update is called once per frame
     void Update() {
@@ -31,7 +34,37 @@ public class Robot : Pickupable {
     /// </summary>
     /// <param name="mainRobot"></param>
     public void Recall(Robot mainRobot) {
+        if (mainRobot != null) {
+            GiveItems(mainRobot);
+        }
 
+        RecallSelf();
+    }
+
+    /// <summary>
+    /// Invokes events, plays animations, cleans up and destroys self
+    /// </summary>
+    private void RecallSelf() {
+        OnRobotDestroyed?.Invoke(this);
+        Destroy(this.gameObject);
+    }
+
+    /// <summary>
+    /// Gives items to other Robot
+    /// </summary>
+    /// <param name="other"></param>
+    private void GiveItems(Robot other) {
+        foreach(Item item in items) {
+            item.GiveTo(other);
+        }
+    }
+
+    /// <summary>
+    /// Receives an item
+    /// </summary>
+    /// <param name="item"></param>
+    public void ReceiveItem(Item item) {
+        items.Add(item);
     }
 
     /// <summary>
