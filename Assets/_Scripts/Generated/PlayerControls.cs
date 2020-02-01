@@ -33,6 +33,22 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Use"",
+                    ""type"": ""Button"",
+                    ""id"": ""fa191a65-f5b9-47bf-9df5-d83a5a6e9de3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Recall"",
+                    ""type"": ""Button"",
+                    ""id"": ""e5e78518-1be6-4a8f-b558-8012712d5dd4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -112,6 +128,28 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Swap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8d13387e-7c66-4a1e-906b-5605def1b8d3"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eb44e323-f817-48dd-9bd8-3c0c736fd506"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Recall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -122,6 +160,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
         m_Gameplay_Swap = m_Gameplay.FindAction("Swap", throwIfNotFound: true);
+        m_Gameplay_Use = m_Gameplay.FindAction("Use", throwIfNotFound: true);
+        m_Gameplay_Recall = m_Gameplay.FindAction("Recall", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -173,12 +213,16 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private IGameplayActions m_GameplayActionsCallbackInterface;
     private readonly InputAction m_Gameplay_Move;
     private readonly InputAction m_Gameplay_Swap;
+    private readonly InputAction m_Gameplay_Use;
+    private readonly InputAction m_Gameplay_Recall;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
         public GameplayActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Gameplay_Move;
         public InputAction @Swap => m_Wrapper.m_Gameplay_Swap;
+        public InputAction @Use => m_Wrapper.m_Gameplay_Use;
+        public InputAction @Recall => m_Wrapper.m_Gameplay_Recall;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -194,6 +238,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Swap.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSwap;
                 @Swap.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSwap;
                 @Swap.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSwap;
+                @Use.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnUse;
+                @Use.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnUse;
+                @Use.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnUse;
+                @Recall.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRecall;
+                @Recall.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRecall;
+                @Recall.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRecall;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -204,6 +254,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Swap.started += instance.OnSwap;
                 @Swap.performed += instance.OnSwap;
                 @Swap.canceled += instance.OnSwap;
+                @Use.started += instance.OnUse;
+                @Use.performed += instance.OnUse;
+                @Use.canceled += instance.OnUse;
+                @Recall.started += instance.OnRecall;
+                @Recall.performed += instance.OnRecall;
+                @Recall.canceled += instance.OnRecall;
             }
         }
     }
@@ -212,5 +268,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnSwap(InputAction.CallbackContext context);
+        void OnUse(InputAction.CallbackContext context);
+        void OnRecall(InputAction.CallbackContext context);
     }
 }

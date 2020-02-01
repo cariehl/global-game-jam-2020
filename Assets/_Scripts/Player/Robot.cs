@@ -31,7 +31,19 @@ public class Robot : MonoBehaviour {
         this.move = move;
     }
 
-    private void Test(InputAction.CallbackContext ctx) {
-        Debug.Log("A");
+    /// <summary>
+    /// Recall this robot to the location of the mainRobot
+    /// </summary>
+    /// <param name="mainRobot"></param>
+    public void Recall(Robot mainRobot) {
+
+    }
+
+    /// <summary>
+    /// Uses an "object"
+    ///   Idea: Pick up another robot or throw an already held robot
+    /// </summary>
+    public void Use() {
+
     }
 }
