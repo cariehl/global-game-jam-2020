@@ -9,6 +9,8 @@ public class Robot : Pickupable {
 
     [SerializeField]
     private float speed = 50f;
+    [SerializeField]
+    private float pickupRange = 2f;
 
     [SerializeField]
     private Pickupable heldObject;
@@ -72,6 +74,52 @@ public class Robot : Pickupable {
     ///   Idea: Pick up another robot or throw an already held robot
     /// </summary>
     public void Use() {
+        if (heldObject != null) {
+            ThrowObject();
+            return;
+        }
 
+        // pickup new object        
+        Pickupable foundObject = FindPickupableObject();
+        Pickup(foundObject);
+    }
+
+    /// <summary>
+    /// Find the closest pickupableObject that is within its pickup range
+    /// </summary>
+    /// <returns>Pickupable object or null if none found</returns>
+    private Pickupable FindPickupableObject() {
+        Collider[] collisions = Physics.OverlapSphere(this.transform.position, pickupRange);
+        foreach (Collider col in collisions) {
+            Pickupable pickup = col.gameObject.GetComponent<Pickupable>();
+            if (pickup != null && pickup != this) {
+                return pickup;
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Attempt to pickup an item in an area around the Robot if one is found
+    /// </summary>
+    private void Pickup(Pickupable other) {
+        if (other == null) return;
+
+        other.GetPickedUp(this);
+        heldObject = other;
+    }
+
+    protected override void OnPickedUp() {
+        base.OnPickedUp();
+    }
+
+    /// <summary>
+    ///   Throw the currently held object
+    /// </summary>
+    private void ThrowObject() {
+        Pickupable other = heldObject;
+        heldObject = null;
+        other.GetThrown();
     }
 }
