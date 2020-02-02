@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour {
 
     private void LevelCompleted(LevelManager level) {
         curentLevel.OnLevelCompleted -= LevelCompleted;
-        
+
+        Debug.Log("Level finished");
     }
 }

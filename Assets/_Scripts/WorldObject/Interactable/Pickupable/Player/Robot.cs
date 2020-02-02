@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +6,8 @@ public class Robot : Pickupable {
 
     public delegate void RobotDestroyedDelegate(Robot robot);
     public event RobotDestroyedDelegate OnRobotDestroyed;
+
+    private CharacterController2D characterController;
 
     [SerializeField]
     private float speed = 50f;
@@ -20,11 +22,19 @@ public class Robot : Pickupable {
 
     private Vector3 move;
 
-    // Update is called once per frame
-    void Update() {
-        Vector3 m = move * Time.deltaTime * speed;
+    private void Awake() {
+        characterController = GetComponent<CharacterController2D>();
+    }
 
-        transform.Translate(m, Space.World);
+    // Update is called once per frame
+    //void Update() {
+    //    Vector3 m = move * Time.deltaTime * speed;
+
+    //    transform.Translate(m, Space.World);
+    //}
+
+    public void Move(float horizontal, bool jump) {
+        characterController.Move(horizontal * speed, false, jump);
     }
 
     public void Move(Vector2 move) {

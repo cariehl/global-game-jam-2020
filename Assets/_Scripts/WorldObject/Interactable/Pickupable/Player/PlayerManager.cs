@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +13,9 @@ public class PlayerManager : MonoBehaviour {
 
     public Robot mainRobot;
 
+    private bool jump = false;
+    private float horizontalMove = 0f;
+
     private void OnEnable() {
         controls.Gameplay.Enable();
     }
@@ -24,8 +27,11 @@ public class PlayerManager : MonoBehaviour {
     private void Awake() {
         controls = new PlayerControls();
 
-        controls.Gameplay.Move.performed += ctx => Movement(ctx.ReadValue<Vector2>());
-        controls.Gameplay.Move.canceled += ctx => Movement(Vector2.zero);
+        controls.Gameplay.Move.performed += ctx => horizontalMove =ctx.ReadValue<Vector2>().x;
+        controls.Gameplay.Move.canceled += ctx => horizontalMove = 0f;
+
+        controls.Gameplay.Jump.performed += ctx => jump = true;
+        controls.Gameplay.Jump.canceled += ctx => jump = false;
 
         controls.Gameplay.Swap.performed += ctx => Swap();
         controls.Gameplay.Recall.performed += ctx => Recall();
@@ -33,13 +39,19 @@ public class PlayerManager : MonoBehaviour {
     }
 
     private void Start() {
-        //AddRobots();
+        if (robots.Count <= 0) {
+            AddRobots();
+        }
 
-        //if (robots.Count > 0) {
-        //    mainRobot = robots[0];
-        //}
+        if (robots.Count > 0 && mainRobot == null) {
+            mainRobot = robots[0];
+        }
+    }
 
-        Movement(Vector2.zero);
+    private void FixedUpdate() {
+        if (mainRobot == null) return;
+
+        mainRobot.Move(horizontalMove * Time.fixedDeltaTime, jump);
     }
 
     /// <summary>
@@ -66,12 +78,6 @@ public class PlayerManager : MonoBehaviour {
     private void RemoveRobot(Robot robot) {
         robot.OnRobotDestroyed -= RemoveRobot;
         robots.Remove(robot);
-    }
-
-    private void Movement(Vector2 move) {
-        if (mainRobot == null) return;
-
-        mainRobot.Move(move);
     }
 
     /// <summary>
@@ -116,7 +122,7 @@ public class PlayerManager : MonoBehaviour {
         mainRobot = robots[0];
     }
 
-    public void FinishLevel() {
+    public void CleanUp() {
         foreach (Robot robot in robots.ToArray()) {
             robot.RecallSelf();
         }

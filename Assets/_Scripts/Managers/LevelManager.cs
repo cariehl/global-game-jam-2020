@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,7 +47,7 @@ public abstract class LevelManager : MonoBehaviour {
     private void LevelCompleted(Robot robot) {
         Debug.Log("Robot " + robot.ToString() + " completed level " + ToString());
 
-        playerManager.FinishLevel();
+        playerManager.CleanUp();
 
         levelActive = false;
         OnLevelCompleted?.Invoke(this);
